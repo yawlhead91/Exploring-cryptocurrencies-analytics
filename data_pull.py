@@ -4,6 +4,10 @@
 Created on Sun Nov 12 18:46:15 2017
 
 @author: alexkirwan
+
+Data pull from coinmarketcap 
+Credit for script is to be given to SRK
+on kaggle
 """
 
 # -*- coding: utf-8 -*-
@@ -17,7 +21,7 @@ from datetime import date
 from bs4 import BeautifulSoup
 
 end_date = str(date.today()).replace("-","")
-base_url = "https://coinmarketcap.com/currencies/{0}/historical-data/?start=20130428&end="+end_date
+base_url = "https://coinmarketcap.com/currencies/{0}/historical-data/?start=20150428&end="+end_date
 
 currency_name_list = ["bitcoin", "ethereum", "ripple", "nem", "litecoin", "dash", "ethereum-classic", "iota", "neo", "stratis", "monero", "omisego", "metaverse", "vertcoin"]
 
@@ -30,7 +34,7 @@ def get_data(currency_name):
     soup = BeautifulSoup(html_response, 'html.parser')
     table = soup.find_all('table')[0]
     elements = table.find_all("tr")
-    with open("./{0}_price.csv".format(currency_name.replace("-","_")),"w") as ofile:
+    with open("./res/{0}_price.csv".format(currency_name.replace("-","_")),"w") as ofile:
         writer = csv.writer(ofile)
         for element in elements:
             writer.writerow( element.get_text().strip().split("\n") )
@@ -38,5 +42,5 @@ def get_data(currency_name):
 
 if __name__ == "__main__":
     for currency_name in currency_name_list:
-        #get_data(currency_name)
+        get_data(currency_name)
         pass
